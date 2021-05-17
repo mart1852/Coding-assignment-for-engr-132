@@ -1,0 +1,156 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% ENGR 132 
+% Program Description 
+%this program is designed so that it plots the various logarithmic
+%equations for a set of data
+%
+% Assignment Information
+%   Assignment:     A#12#, Problem #3
+%   Author:         christian martinez, mart1852@purdue.edu
+%   Team ID:        ###07##
+%   Academic Integrity:
+%     [] I worked with one or more peers but our collaboration
+%        maintained academic integrity.
+%     Peers I worked with: Name, login@purdue [repeat for each]
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%% ____________________
+%% INITIALIZATION
+%defines for the different arrays used in the problem
+data = readtable('Data_A12Prob3.csv');
+xone = data(:,1)
+xone = table2array(xone)
+yone = data(:,2)
+yone = table2array(yone)
+xtwo = data(:,3)
+xtwo = table2array(xtwo)
+ytwo = data(:,4)
+ytwo = table2array(ytwo)
+%% ____________________
+%% PART A
+
+%% Formatted Figure 1 - DATA SET 1
+%sets up the different subplots for figure 1 by adjusting the scales for the different log values
+figure(1)
+%defines the subplot for just y vs x
+subplot(2,2,1)
+plot(xone, yone, 'gs')
+xlabel('x1')
+ylabel('y1')
+title('Y1 vs X1')
+grid on
+%defines the subplot for semilog x vs y
+subplot(2,2,2)
+semilogx(xone,yone, "m-")
+xlabel('semilog x1')
+ylabel('y1')
+title('Y1 vs semilogX1')
+%defines the subplot for the semilog y vs x
+subplot(2,2,3)
+semilogy(xone,yone, "b^")
+xlabel('x1')
+ylabel('semilog y1')
+title('semilogY1 vs X1')
+%defines the subplot for semilog y vs semilog x
+subplot(2,2,4)
+loglog(xone,yone, "r*")
+xlabel('semilogx1')
+ylabel('semilog y1')
+title('semilogY1 vs semilog X1')
+
+
+%% Formatted Figure 2 - DATA SET 2
+%sets up the different subplots for figure 2 by adjusting the scales for the different log values
+figure(2)
+%defines the subplot for y vs x
+subplot(2,2,1)
+plot(xtwo, ytwo, 'gs')
+xlabel('x2')
+ylabel('y2')
+title('Y2 vs X2')
+grid on
+%defines the subplot for y vs semilog x
+subplot(2,2,2)
+semilogx(xtwo,ytwo, "m-")
+xlabel('semilog x2')
+ylabel('y2')
+title('Y1 vs semilogX2')
+%defines the subplot for semilog y vs x
+subplot(2,2,3)
+semilogy(xtwo,ytwo, "b^")
+xlabel('x2')
+ylabel('semilog y2')
+title('semilogY2 vs X2')
+%defines the subplot for semilog y vs semilog x
+subplot(2,2,4)
+loglog(xtwo,ytwo, "r*")
+xlabel('semilogx2')
+ylabel('semilog y2')
+title('semilogY2 vs semilog X2')
+
+
+
+%% ____________________
+%% PART B
+
+%% Data Linearization Calculations
+
+%sets for the linearized values of the first model
+xone_lin = xone
+yone_lin = log10(yone)
+%sets up for the values that will be used to calculate the y values of the
+%plot one since the equation is exponential
+lin_par = polyfit(xone_lin, yone_lin, 1)
+m_lin = lin_par(1)
+b_lin = lin_par(2)
+bmodel = 10^b_lin
+%sets for the linearized values of the second model
+xtwo_lin = log10(xtwo)
+ytwo_lin = log10(ytwo)
+%sets up for the values that will be used to calculate the y values of the
+%plot one since the equation is exponential
+lin_partwo = polyfit(xtwo_lin, ytwo_lin, 1)
+mtwo_lin = lin_partwo(1)
+btwo_lin = lin_partwo(2)
+bmodeltwo = 10^btwo_lin
+%sets up the y value that will be used in the plot
+yone_plot = bmodel * 10.^(m_lin * xone_lin)
+ytwo_plot = bmodeltwo * xtwo_lin.^(mtwo_lin)
+
+%% Text Display
+fprintf(' the first equation can be modeld by the following')
+fprintf("y = %0.2f*10^%0.2f\n", bmodel, m_lin)
+
+fprintf(' the second equation can be modeld by the following')
+fprintf("y = %0.2f*10^%0.2f\n", bmodeltwo, mtwo_lin)
+%% Figure Display
+%codes for the plot for the 3 graph
+figure(3)
+plot(xone,yone_plot, "r-")
+xlabel('linear x')
+ylabel('linear y')
+title('x vs log y')
+
+%codes for the plot of linear figure 4
+figure(4)
+plot(xtwo_lin,ytwo_plot, "r-")
+xlabel('linear x')
+ylabel('linear y')
+title('log x vs log y')
+
+
+
+%% ____________________
+%% RESULTS
+%the first equation can be modeld by the following
+%y = 151.43*10^0.01
+%the second equation can be modeld by the following
+%y = 0.05*10^2.26
+
+%% ____________________
+%% ACADEMIC INTEGRITY STATEMENT
+% I have not used source code obtained from any other unauthorized
+% source, either modified or unmodified. I have not provided
+% access to my code to anyone in any way. The script I am 
+% submitting is my own original work.
